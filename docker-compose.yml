@@ -15,7 +15,7 @@ services:
     image: mysql:5.7
     container_name: colmex.mysql
     env_file:
-      - ./mysql/.env
+      - ./.env
     restart: always
     # volumes:
     #   - ./mysql/my.cnf:/etc/mysql/my.cnf

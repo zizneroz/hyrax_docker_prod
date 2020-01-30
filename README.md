@@ -22,6 +22,8 @@ Con la finalidad de crear un entorno de desarrollo totalmente montado en docker 
 	* [Ejecutar archivo docker-compose](#ejecutar-archivo-docker-compose)
 	+ [Modificar permisos a la carpeta /conf](#modificar-permisos-de-la-carpeta-/conf)
 	* [Detener contenedores y volver a iniciarlos](#detener-contenedores-y-volver-a-contruirlos)
+    * [Migrar base de datos](#migrar-base-de-datos)
+    * [Crear role y usuario](#crear-role-y-usuario)
 <!--te-->
 
 ** **
@@ -70,4 +72,36 @@ Dentro de la consola donde ejecutamos el archivo docker-compose presionamos CTRL
 
 Y finalmente ejecutamos docker-compose de la siguiente manera, para volver a cargar los archivos:
 >   `$ docker-compose up --build`
+
+### Migrar base de datos
+
+Ya montado nuestro entorno deberemos migrar nuestra base de datos para ello accesaremos al contenedor de hyrax:
+
+>   `$ docker exec -it colmex.hyrax /bin/bash`
+
+Posteriormente ejecutamos:
+
+>   `# rake db:create db:migrate`
+
+### Crear role y usuario
+
+Ahora tendremos que agregar un nuevo usuario y el rol 'admin' para poder tener acceso a la administracion del repositorio.
+
+Ingresamos a la consola de rail:
+
+>   `# rails c`
+
+Creamos el usuario:
+
+>   `> User.create!(email: "mail@domain.mx", password: "*******", password_confirmation: "******")`
+
+Creamos el Rol:
+
+>   `> Role.create!(:name => "admin")`
+
+Le asignamos el rol al usuario con los siguientes comandos:
+
+>   `> admin = Role.find(1)`
+
+>   `> admin.users << User.find_by_user_key("mail@domain.mx")`
 
