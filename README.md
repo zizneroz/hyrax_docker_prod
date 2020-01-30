@@ -32,21 +32,8 @@ Con la finalidad de crear un entorno de desarrollo totalmente montado en docker 
 ### Modificar archivo .env
 
 Para poder personalizar nuestras imagenes de docker debemos modificar los archivos .env:
-General:
 
->	` .env
-
-Fedora:
-
->	`/fcrepo/.env`
-
-Solr:
-
->	`/solr/.env`
-
-Solr:
-
->	`/mysql/.env`
+>	` .env`
 
 
 ### Ejecutar archivo docker-compose
