@@ -18,9 +18,9 @@ Con la finalidad de crear un entorno de desarrollo totalmente montado en docker 
 
 <!--ts-->
 - [Iniciar el proyecto](#iniciar-el-proyecto)
-    * [Modificar el archivo .env](#modificar-archivo-(env))
+    * [Modificar el archivo .env](#modificar-archivo-env)
 	* [Ejecutar archivo docker-compose](#ejecutar-archivo-docker-compose)
-	+ [Modificar permisos a la carpeta /conf](#modificar-permisos-de-la-carpeta-/conf)
+	+ [Modificar permisos a la carpeta /conf](#modificar-permisos-de-la-carpeta-conf)
 	* [Detener contenedores y volver a iniciarlos](#detener-contenedores-y-volver-a-contruirlos)
     * [Migrar base de datos](#migrar-base-de-datos)
     * [Crear role y usuario](#crear-role-y-usuario)
@@ -31,7 +31,7 @@ Con la finalidad de crear un entorno de desarrollo totalmente montado en docker 
 ## Iniciar el proyecto
 
 
-### Modificar archivo (env)
+### Modificar archivo .env
 
 Para poder personalizar nuestras imagenes de docker debemos modificar los archivos .env:
 
