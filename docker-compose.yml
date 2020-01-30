@@ -1,0 +1,94 @@
+version: '3.3'
+
+volumes:
+  solr:
+
+# networks:
+#   vpcbr:
+#       driver: bridge
+#       ipam:
+#         config:
+#           - subnet: 10.5.0.0/16
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: colmex.mysql
+    env_file:
+      - ./mysql/.env
+    restart: always
+    # volumes:
+    #   - ./mysql/my.cnf:/etc/mysql/my.cnf
+    #   - ./mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - '${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}'
+    # networks:
+    #   vpcbr:
+    #     ipv4_address: 10.5.0.7
+    expose:
+      - ${MYSQL_PORT}
+
+  solr:
+    #image: solr:7.0.1
+    container_name: ${SOLR_NAME}
+    restart: always
+    build: ./solr
+    ports:
+      - "${SOLR_PORT}:${SOLR_DOCKER_PORT}"
+    #command: precreate-core hydra-development
+    volumes:
+      #- solr:/opt/solr/server/solr/mycores
+      #- ./config/:/opt/solr/server/solr/
+      - ./${SOLR_VOLUME_LOCAL}:/opt/solr/server/solr/mycores/${SOLR_CORE}/conf
+    # networks:
+    #   vpcbr:
+    #     ipv4_address: 10.5.0.8
+    #entrypoint:
+      #- docker-entrypoint.sh
+
+  fcrepo:
+    #image: ualbertalib/docker-fcrepo4
+    image: samvera/fcrepo4:4.7.3
+    container_name: ${FEDORA_NAME}
+    #build: ./fcrepo
+    ports:
+      - ${FEDORA_LOCAL_PORT}:${FEDORA_DOCKER_PORT}
+    expose:
+      - ${FEDORA_LOCAL_PORT}
+    # networks:
+    #   vpcbr:
+    #     ipv4_address: 10.5.0.6
+    depends_on:
+      - db
+  
+  redis:
+    image: redis
+    container_name: colmex.redis
+    ports:
+      - 6379:6379
+    restart: always
+    expose:
+      - 6379
+
+  web:
+    build: ./colmex_hyrax
+    container_name: ${WEB_NAME}
+    volumes:
+      - ./${WEB_CONTAINER}:/${WEB_WORK_DIR}
+      - ./${FITS_LOCAL_FILE}:/${FITS_WORK_DIR}
+    working_dir: /${WEB_WORK_DIR}
+    command:
+      - puma
+    ports:
+      - ${WEB_LOCAL_PORT}:${WEB_DOCKER_PORT}
+    # networks:
+    #   vpcbr:
+    #     ipv4_address: 10.5.0.5
+    depends_on:
+      - db
+      - solr
+      - fcrepo

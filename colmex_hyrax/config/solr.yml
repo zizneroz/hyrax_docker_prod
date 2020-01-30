@@ -1,0 +1,7 @@
+development:
+  url: <%= ENV['SOLR_URL'] || "http://colmex.solr:8983/solr/hydra-development" %>
+test:
+  url: <%= ENV['SOLR_URL'] || "http://localhost:8985/solr/hydra-test" %>
+production:
+  url: <%= ENV['SOLR_URL'] || "http://localhost:8983/solr/hydra-indexer" %>
+

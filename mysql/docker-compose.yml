@@ -1,0 +1,17 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql
+    container_name: mysql
+    env_file:
+      - .env
+    restart: always
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - '${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}'
+    expose:
+      - ${MYSQL_PORT}
