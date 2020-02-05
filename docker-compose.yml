@@ -81,10 +81,11 @@ services:
       - ./${WEB_CONTAINER}:/${WEB_WORK_DIR}
       - ./${FITS_LOCAL_FILE}:/${FITS_WORK_DIR}
     working_dir: /${WEB_WORK_DIR}
-    command:
-      - puma
+    # command:
+    #   - puma
     ports:
       - ${WEB_LOCAL_PORT}:${WEB_DOCKER_PORT}
+    command: bash -c "/bin/docker-entrypoint.sh"
     # networks:
     #   vpcbr:
     #     ipv4_address: 10.5.0.5
@@ -92,3 +93,4 @@ services:
       - db
       - solr
       - fcrepo
+      - redis
