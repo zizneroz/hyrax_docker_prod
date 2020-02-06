@@ -1,8 +1,5 @@
 version: '3.3'
 
-volumes:
-  solr:
-
 # networks:
 #   vpcbr:
 #       driver: bridge
@@ -39,11 +36,12 @@ services:
     build: ./solr
     ports:
       - "${SOLR_PORT}:${SOLR_DOCKER_PORT}"
-    #command: precreate-core hydra-development
+    #command: sudo chmod -R 777 /opt/solr/server/solr/mycores/hydra-development/
     volumes:
       #- solr:/opt/solr/server/solr/mycores
       #- ./config/:/opt/solr/server/solr/
       - ./${SOLR_VOLUME_LOCAL}:/opt/solr/server/solr/mycores/${SOLR_CORE}/conf
+    #entrypoint: sudo chmod -R 777 /opt/solr/server/solr/mycores/hydra-development/
     # networks:
     #   vpcbr:
     #     ipv4_address: 10.5.0.8
