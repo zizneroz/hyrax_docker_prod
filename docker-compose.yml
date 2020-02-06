@@ -65,12 +65,12 @@ services:
   
   redis:
     image: redis
-    container_name: colmex.redis
+    container_name: ${REDIS_HOST}
     ports:
-      - 6379:6379
+      - ${REDIS_LOCAL_PORT}:${REDIS_DOCKER_PORT}
     restart: always
     expose:
-      - 6379
+      - ${REDIS_DOCKER_PORT}
 
   web:
     build: ./colmex_hyrax
