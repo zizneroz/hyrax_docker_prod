@@ -12,7 +12,7 @@
 # fi
 
 # wait for Solr and Fedora to come up
-sleep 10s
+sleep 20s
 
 ## Run any pending migrations, if the database exists
 ## If not setup the database
@@ -64,8 +64,13 @@ else
     exit 1
 fi
 
-rake db:create db:migrate db:seed db:setup
-rails hyrax:default_admin_set:create
+rake RAILS_ENV=production db:create 
+rake RAILS_ENV=production db:migrate 
+rake RAILS_ENV=production db:seed 
+#rake RAILS_ENV=production db:setup
+rake RAILS_ENV=production assets:precompile
+RAILS_ENV=production rake hyrax:default_admin_set:create
+#rails generate active_fedora:noid:install
 
 #bundle exec rails -c Role.create!(:name => "admin")
 #rails console Role.create!(:name => "admin")
@@ -74,4 +79,6 @@ rails hyrax:default_admin_set:create
 
 # # echo "--------- Starting Hyrax in $RAILS_ENV mode ---------"
 rm -f /tmp/hyrax.pid
-bundle exec rails server -p 3000 -b '0.0.0.0' --pid /tmp/hyrax.pid
+bundle exec rails server -e production --pid /tmp/hyrax.pid
+
+bundle exec sidekiq -C config/sidekiq.yml -e production

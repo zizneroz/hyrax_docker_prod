@@ -72,7 +72,7 @@ services:
     expose:
       - ${REDIS_DOCKER_PORT}
 
-  web:
+  app:
     build: ./colmex_hyrax
     container_name: ${WEB_NAME}
     volumes:
@@ -92,3 +92,15 @@ services:
       - solr
       - fcrepo
       - redis
+  
+  web:
+    container_name: colmex.nginx
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    depends_on: 
+      - app
+    volumes:
+      - ./colmex_hyrax/public/:/colmex_hyrax/public/
+    ports:
+      - 80:80
